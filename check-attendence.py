@@ -49,33 +49,25 @@ def screen_attendence_time(dict_list):
 
         # 筛选打卡结果至少包含 “{正常，[早退，迟到]}的记录”，只有这种情况，才认为当天上班的情况是可以列为有效统计的
         # 其余的情况，比如请假，外勤，漏打卡，缺卡等各种情况的组合，人为因素太难把控，容易给平均工时带来干扰
-        if dic['打卡结果1'] == '正常' and dic['打开结果2'] == '正常':
-            pass
-        elif dic['打卡结果1'] == '正常' and '早退' in dic['打开结果2']:
-            pass
-        elif '迟到' in dic['打卡结果1'] and dic['打开结果2'] == '正常':
-            pass
+        if (dic['打卡结果1'] == '正常' and dic['打开结果2'] == '正常') or (dic['打卡结果1'] == '正常' and '早退' in dic['打开结果2']) or ('迟到' in dic['打卡结果1'] and dic['打开结果2'] == '正常'):
+            interval_hours = interval_hours_without_date(dic['打卡时间2'] - dic['打卡时间1'])
 
 
 
 
+def interval_hours_without_date(begin_time_str, end_time_str ):
 
+    start_dt = datetime.datetime.strptime(begin_time_str, "%H:%M")
+    end_dt = datetime.datetime.strptime(end_time_str, "%H:%M")
 
-
+    interval = end_dt - start_dt
+    return (interval.days*24*3600 + interval.seconds) / 3600
 
 
 
 def average_hours(begin_time_str, end_time_str ):
 
-    if ':' not in begin_time_str:
-        start_dt = datetime.datetime.strptime(begin_time_str, "%Y-%m-%d")
-    else:
-        start_dt = datetime.datetime.strptime(begin_time_str, "%Y-%m-%d %H:%M:%S")
 
-    if ':' not in end_time_str:
-        end_dt = datetime.datetime.strptime(end_time_str, "%Y-%m-%d")
-    else:
-        end_dt = datetime.datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S")
 
 
     return average_hours
