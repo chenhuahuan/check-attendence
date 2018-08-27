@@ -22,9 +22,9 @@ class XlsManager(object):
 
     def __init__(self,file=None,keeping_format=True):
         
-        if os.path.exists(file):
-            self.rdbook = xlrd.open_workbook(file, formatting_info=keeping_format)
-            self.wtbook, self.style_list = self._copy2(self.rdbook)
+        assert os.path.exists(file), "File: {} NOT Found!".format(file)
+        self.rdbook = xlrd.open_workbook(file, formatting_info=keeping_format)
+        self.wtbook, self.style_list = self._copy2(self.rdbook)
 
     def read_xls_cell(self, row, col, sheetx=0, sheet_name=None):
 
@@ -49,29 +49,6 @@ class XlsManager(object):
         for row_index in range(1, sheet.nrows):
             d = {keys[col_index]: sheet.cell(row_index, col_index).value
                  for col_index in range(sheet.ncols)}
-            dict_list.append(d)
-
-        return dict_list
-
-    def read_xls_to_dict_list_attendence(self, sheetx=0, sheet_name=None, key_rows = 0):
-
-        if sheet_name:
-            sheet = self.rdbook.sheet_by_name(sheet_name)
-        else:
-            sheet = self.rdbook.sheet_by_index(sheetx)
-
-        # read header values into the list
-        keys_common = [sheet.cell(key_rows, col_index).value for col_index in range(7)]
-
-        dict_list = []
-        for row_index in range(1, sheet.nrows):
-            d = {keys_common[col_index]: sheet.cell(row_index, col_index).value
-                 for col_index in range(7)}
-            d['打卡时间1'] = sheet.cell(row_index, 7).value
-            d['打卡结果1'] = sheet.cell(row_index, 8).value
-            d['打卡时间2'] = sheet.cell(row_index, 9).value
-            d['打卡结果2'] = sheet.cell(row_index, 10).value
-
             dict_list.append(d)
 
         return dict_list
