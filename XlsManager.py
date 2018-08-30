@@ -35,6 +35,7 @@ class XlsManager(object):
 
         return sheet.cell(row, col).value
 
+    # the key_row as key, the value in the cell as value.
     def read_xls_to_dict_list(self, sheetx=0, sheet_name=None, key_rows = 0):
 
         if sheet_name:

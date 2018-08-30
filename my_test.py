@@ -1,5 +1,7 @@
 
 import datetime
+from dateutil.relativedelta import *
+import time
 
 def interval_hours(begin_time_str, end_time_str ):
 
@@ -30,6 +32,20 @@ def interval_hours_without_date(begin_time_str, end_time_str ):
 
     interval = end_dt - start_dt
     return (interval.days*24*3600 + interval.seconds) / 3600
+
+
+def get_date_timestamp(strf,days=0):
+
+    n_days = datetime.datetime.today()+relativedelta(days=-days)
+    return str(n_days.strftime(strf))
+
+
+def get_time():
+    return str(int(time.time()*1000))
+
+print(get_time())
+
+print(get_date_timestamp("%Y-%m-%d"))
 
 
 delta = interval_hours("2018-07-12 09:10", "2018-07-13 19:00")
